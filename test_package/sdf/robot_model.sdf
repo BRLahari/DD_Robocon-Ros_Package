@@ -1,0 +1,641 @@
+<?xml version="1.0"?>
+<sdf version='1.8'>
+  <world name="car_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+          <range>1000</range>
+          <constant>0.9</constant>
+          <linear>0.01</linear>
+          <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+        <geometry>
+          <plane>
+          <normal>0 0 1</normal>
+          </plane>
+        </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name='robot1'>
+      <pose>0 0 0 -1.5708 0 0</pose>
+      <link name='bottomr1'>
+        <inertial>
+          <pose>7.53658218284881e-05 -0.132809933481496 7.977752757737379e-06 0 0 0</pose>
+          <mass>14.2483112573581</mass>
+          <inertia>
+            <ixx>0.106160859747092</ixx>
+            <ixy>7.67360869532922e-10</ixy>
+            <ixz>-0.00011725526895491401</ixz>
+            <iyy>0.20116048948117601</iyy>
+            <iyz>-1.6862021303508501e-08</iyz>
+            <izz>0.108352525018187</izz>
+          </inertia>
+        </inertial>
+        <collision name='bottomr1_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bottomr1.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='bottomr1_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bottomr1.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='turret_joint' type='revolute'>
+        <pose relative_to='bottomr1'>-0.00353055306709099 -0.389640000000017 -0.0251534330666895 3.14159265358979 0.139449674318289 -4.978710793544783e-32</pose>
+        <parent>bottomr1</parent>
+        <child>upper_part</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='upper_part'>
+        <pose relative_to='turret_joint'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>1.56967323466928e-06 0.06755021446377039 -0.0132106593255242 0 0 0</pose>
+          <mass>2.4573430326414498</mass>
+          <inertia>
+            <ixx>0.0428133000306265</ixx>
+            <ixy>1.44280974038179e-08</ixy>
+            <ixz>-6.3836068235284902e-06</ixz>
+            <iyy>0.068259865810214301</iyy>
+            <iyz>-8.7978767324861098e-05</iyz>
+            <izz>0.081271286336138004</izz>
+          </inertia>
+        </inertial>
+        <collision name='upper_part_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/upper_part.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='upper_part_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/upper_part.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='pivot_joint' type='revolute'>
+        <pose relative_to='upper_part'>0 0.4127 -0.0253999999999878 3.14159265358979 -1.570796326794897 0</pose>
+        <parent>upper_part</parent>
+        <child>bucket_attachment</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='bucket_attachment'>
+        <pose relative_to='pivot_joint'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0.00540124211823767 0.0441197040902448 0.112798463255463 0 0 0</pose>
+          <mass>5.1827425068754804</mass>
+          <inertia>
+            <ixx>0.0194126437184023</ixx>
+            <ixy>5.4050139401479203e-05</ixy>
+            <ixz>8.7884048664745697e-08</ixz>
+            <iyy>0.021077114201975802</iyy>
+            <iyz>2.57602721018427e-08</iyz>
+            <izz>0.0217048019547979</izz>
+          </inertia>
+        </inertial>
+        <collision name='bucket_attachment_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bucket_attachment.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='bucket_attachment_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bucket_attachment.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='bowl_joint' type='prismatic'>
+        <pose relative_to='bucket_attachment'>0 0.0308932734702428 0 0 0.7853981633974428 0</pose>
+        <parent>bucket_attachment</parent>
+        <child>bowl</child>
+        <axis>
+          <xyz>0.022961 0.999473 0.022961</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+            <effort>0</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='bowl'>
+        <pose relative_to='bowl_joint'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>-0.0015435020622821 -0.0980792096838647 -0.00154350252564139 0 0 0</pose>
+          <mass>0.82409491058085804</mass>
+          <inertia>
+            <ixx>0.0035486234510205298</ixx>
+            <ixy>6.5131289214229101e-05</ixy>
+            <ixz>1.44830178161032e-05</ixz>
+            <iyy>0.0063951645663737396</iyy>
+            <iyz>6.5131303690768697e-05</iyz>
+            <izz>0.0035486234340947301</izz>
+          </inertia>
+        </inertial>
+        <collision name='bowl_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bowl.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='bowl_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bowl.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>0.622549 0.622549 0.622549 1</diffuse>
+            <ambient>0.622549 0.622549 0.622549 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='flywheel_joint1' type='revolute'>
+        <pose relative_to='bucket_attachment'>0.164163014674866 0.125535431702969 0.050000000000001 1.290579727020073 1.570796326794897 0</pose>
+        <parent>bucket_attachment</parent>
+        <child>flywheel1</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='flywheel1'>
+        <pose relative_to='flywheel_joint1'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0.0502650834438392 -1.190726128808e-10 -3.6508013556702e-07 0 0 0</pose>
+          <mass>0.90883418828037998</mass>
+          <inertia>
+            <ixx>0.0020395490381512199</ixx>
+            <ixy>5.1593445312161398e-12</ixy>
+            <ixz>-5.3178905272729801e-08</ixz>
+            <iyy>0.00246812091915646</iyy>
+            <iyz>-2.2816622723131901e-13</iyz>
+            <izz>0.0024680734062141902</izz>
+          </inertia>
+        </inertial>
+        <collision name='flywheel1_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/flywheel1.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='flywheel1_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/flywheel1.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='flywheel_joint2' type='revolute'>
+        <pose relative_to='bucket_attachment'>-0.155668227451172 0.135926608735046 -0.0500000000000008 1.063188500799367 1.570796311893735 0</pose>
+        <parent>bucket_attachment</parent>
+        <child>flywheel2</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='flywheel2'>
+        <pose relative_to='flywheel_joint2'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>-0.0497349165519245 -3.49500396401581e-07 1.05522121929269e-07 0 0 0</pose>
+          <mass>0.90883418807869898</mass>
+          <inertia>
+            <ixx>0.00203954903814212</ixx>
+            <ixy>-5.0915737128997099e-08</ixy>
+            <ixz>1.5348787001295801e-08</ixz>
+            <iyy>0.0024680773654135102</iyy>
+            <iyz>1.31338870912887e-08</iyz>
+            <izz>0.0024681169568618998</izz>
+          </inertia>
+        </inertial>
+        <collision name='flywheel2_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/flywheel2.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='flywheel2_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/flywheel2.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>0.622549 0.622549 0.622549 1</diffuse>
+            <ambient>0.622549 0.622549 0.622549 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='pulley_joint' type='revolute'>
+        <pose relative_to='bucket_attachment'>0.0417905796694364 -0.253490724585521 0 -1.38640207980532 0 3.14159265358979</pose>
+        <parent>bucket_attachment</parent>
+        <child>bottompulley</child>
+        <axis>
+          <xyz>0.999473 -0.005954 -0.031922</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='bottompulley'>
+        <pose relative_to='pulley_joint'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0.0475780970789825 -0.000204841548063106 -0.00151957910404249 0 0 0</pose>
+          <mass>0.061351321425399299</mass>
+          <inertia>
+            <ixx>2.3527165866375099e-05</ixx>
+            <ixy>-5.6484635971950903e-08</ixy>
+            <ixz>-3.0861105003023898e-07</ixz>
+            <iyy>1.396239219639e-05</iyy>
+            <iyz>1.81342983566199e-09</iyz>
+            <izz>1.38744392315455e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='bottompulley_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bottompulley.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='bottompulley_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/bottompulley.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>0.622549 0.622549 0.622549 1</diffuse>
+            <ambient>0.622549 0.622549 0.622549 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='wheeljoint1' type='revolute'>
+        <pose relative_to='bottomr1'>-0.1876 -0.049501 -0.20689 2.1556 -0.47694 2.1771</pose>
+        <parent>bottomr1</parent>
+        <child>wheel1</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wheel1'>
+        <pose relative_to='wheeljoint1'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>-2.64216730178762e-05 -0.0201278469559177 -1.10090922153458e-05 0 0 0</pose>
+          <mass>1.6023722651068999</mass>
+          <inertia>
+            <ixx>0.00042299725402375601</ixx>
+            <ixy>-2.34987777461355e-07</ixy>
+            <ixz>-7.7282855634279706e-08</ixz>
+            <iyy>0.00076801837941033201</iyy>
+            <iyz>1.07892517808214e-07</iyz>
+            <izz>0.00042285421833818598</izz>
+          </inertia>
+        </inertial>
+        <collision name='wheel1_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel1.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wheel1_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel1.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='wheeljoint2' type='revolute'>
+        <pose relative_to='bottomr1'>0.20689 -0.049501 -0.1876 0.89296 0.53083 2.1321</pose>
+        <parent>bottomr1</parent>
+        <child>wheel2</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wheel2'>
+        <pose relative_to='wheeljoint2'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>-2.64216740977208e-05 -0.0201278469524792 -1.10090929728024e-05 0 0 0</pose>
+          <mass>1.60237226527128</mass>
+          <inertia>
+            <ixx>0.00042299725404250902</ixx>
+            <ixy>-2.3498775997246901e-07</ixy>
+            <ixz>-7.7282869809396394e-08</ixz>
+            <iyy>0.00076801837943757498</iyy>
+            <iyz>1.07892529032368e-07</iyz>
+            <izz>0.000422854218366011</izz>
+          </inertia>
+        </inertial>
+        <collision name='wheel2_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel2.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wheel2_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel2.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='wheeljoint3' type='revolute'>
+        <pose relative_to='bottomr1'>0.1876 -0.049501 0.20689 -0.98603 0.4769400000000001 0.9644799999999999</pose>
+        <parent>bottomr1</parent>
+        <child>wheel3</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wheel3'>
+        <pose relative_to='wheeljoint3'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>-2.64216728463329e-05 -0.0201278469583051 -1.10090916434352e-05 0 0 0</pose>
+          <mass>1.60237226499293</mass>
+          <inertia>
+            <ixx>0.00042299725400625498</ixx>
+            <ixy>-2.3498778006009099e-07</ixy>
+            <ixz>-7.7282853151971701e-08</ixz>
+            <iyy>0.00076801837940496099</iyy>
+            <iyz>1.07892509133489e-07</iyz>
+            <izz>0.00042285421833026398</izz>
+          </inertia>
+        </inertial>
+        <collision name='wheel3_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel3.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wheel3_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel3.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <joint name='wheeljoint4' type='revolute'>
+        <pose relative_to='bottomr1'>-0.20689 -0.049501 0.1876 -2.2486 -0.53083 1.0095</pose>
+        <parent>bottomr1</parent>
+        <child>wheel4</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wheel4'>
+        <pose relative_to='wheeljoint4'>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>-2.64216728463329e-05 -0.0201278469583038 -1.10090916435879e-05 0 0 0</pose>
+          <mass>1.6023722649929499</mass>
+          <inertia>
+            <ixx>0.00042299725400584098</ixx>
+            <ixy>-2.3498778007001999e-07</ixy>
+            <ixz>-7.72828531483939e-08</ixz>
+            <iyy>0.00076801837940497204</iyy>
+            <iyz>1.0789250916203401e-07</iyz>
+            <izz>0.00042285421832984299</izz>
+          </inertia>
+        </inertial>
+        <collision name='wheel4_collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel4.STL</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wheel4_visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/naresh/ros2_ws/src/test_package/meshes/wheel4.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <plugin name="test_package::OmniwheelPlugin" 
+              filename="libtest_package_plugin.so">
+        <wheeljoint1>wheeljoint1</wheeljoint1>
+        <wheeljoint2>wheeljoint2</wheeljoint2>
+        <wheeljoint3>wheeljoint3</wheeljoint3>
+        <wheeljoint4>wheeljoint4</wheeljoint4>
+        <wheel_radius>0.04948978312313557</wheel_radius>
+        <wheel_to_center>0.32046840717</wheel_to_center>
+      </plugin>
+    </model>
+  </world>
+</sdf>
